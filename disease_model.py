@@ -65,3 +65,47 @@ class Person_Agent(Agent):
 
             if self.disease_duration <= 0:
                 self.infected = False
+
+
+class Disease_Model(Model):
+    def __init__(
+        self,
+        N,
+        width,
+        height,
+        initial_infection,
+        transmissibility,
+        level_of_movement,
+        mean_length_of_disease,
+    ) -> None:
+
+        self.running = True
+        self.num_agents = N
+        self.grid = MultiGrid(width, height, True)
+
+        self.schedule = RandomActivation(self)
+
+        for i in range(self.num_agents):
+
+            a = Person_Agent(
+                i,
+                self,
+                initial_infection,
+                transmissibility,
+                level_of_movement,
+                mean_length_of_disease,
+            )
+
+            self.schedule.add(a)
+
+            try:
+                start_cell = self.grid.find_empty()
+                self.grid.place_agent(a, start_cell)
+
+            except:
+                x = random.randrange(self.grid.width)
+                y = random.randrange(self.grid.height)
+                self.grid.place_agent(a, (x, y))
+
+    def step(self):
+        self.schedule.step()

@@ -128,3 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 disease_model.py
+.vscode/launch.json
+.vscode/settings.json
